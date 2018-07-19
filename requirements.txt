@@ -1,0 +1,6 @@
+numpy
+pyglet
+ratcave
+psychopy
+pypixxlib
+natnetclient
