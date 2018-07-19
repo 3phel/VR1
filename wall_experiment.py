@@ -9,7 +9,7 @@ import subprocess
 from psychopy.gui import DlgFromDict
 import sys
 from datetime import datetime
-import utils
+from utils import create_and_configure_experiment_logs
 #from pypixxlib import propixx (FIX ME! (If you want))
 
 
@@ -144,13 +144,15 @@ if cfg.MOUSE.lower() not in ['demo']:
         expname=cfg.VR_WALL_EXPERIMENT_NAME, datetime=now, MOUSE=cfg.MOUSE,
         VR_WALL_X_OFFSET=cfg.VR_WALL_X_OFFSET, person=cfg.EXPERIMENTER[0].upper(),
         log_code=cfg.PAPER_LOG_CODE)
-    utils.create_and_configure_experiment_logs(filename=filename, motive_client=motive,
+    create_and_configure_experiment_logs(filename=filename, motive_client=motive,
                                                exclude_subnames=['OBJECT', 'CLIFF', 'SPATIAL_NOVELTY', 'ACUITY'])
 
 
 exp = events.chain_events(seq, log=True, motive_client=motive)
 exp.next()
 #pyglet.clock.schedule(exp.send)
+
+#app.current_vr_scene = vr_scene_with_wall
 
 # Schedule the event sequence and run the VR App!
 app.run()

@@ -30,7 +30,6 @@ pyglet.options['debug_gl_trace'] = False
 
 import ratcave as rc
 from natnetclient import NatClient
-import utils
 import cfg
 
 motive = NatClient(read_rate=2000, )
@@ -80,81 +79,42 @@ class RatcaveApp(pyglet.window.Window):
 
         self.rodent_rb = motive.rigid_bodies[cfg.RODENT_MOTIVE_NAME]
 
-        # self.antialiasing = antialiasing
+        self.antialiasing = antialiasing
         # self.fbo_aa = rc.FBO(rc.Texture(width=4096, height=4096, mipmap=True))
         # self.aa_quad = rc.gen_fullscreen_quad()
         # self.aa_quad.texture = self.fbo_aa.texture
         # self.shader_deferred = rc.Shader.from_file(*rc.resources.deferredShader)
-        # if fps_mode:
-            # pass
-            # # raise NotImplementedError("Haven't gotten fps_mode to work properly yet.")
-        # self.fps_mode = fps_mode
+		
+        if fps_mode:
+            raise NotImplementedError("Haven't gotten fps_mode to work properly yet.")
+        self.fps_mode = fps_mode
 
         pyglet.clock.schedule(self.update)
 
-    # def on_draw(self):
-    #     """Render the virtual environment."""
-    #     if self.fps_mode:
-    #         with self.shader:
-    #             if self.current_vr_scene:
-    #                 self.current_vr_scene.draw()
-    #             else:
-    #                 self.active_scene.draw()
-    #     else:
-    #         with self.shader:
-    #             if self.current_vr_scene:
-    #                 with self.cube_fbo as fbo:
-    #
-    #                     self.current_vr_scene.draw360_to_texture_anaglyphed(fbo.texture)
-    #             if self.antialiasing:
-    #                 with self.fbo_aa:
-    #                     self.active_scene.draw()
-    #             else:
-    #                 self.active_scene.draw()
-    #
-    #         if self.antialiasing:
-    #             with self.shader_deferred:
-    #                 self.aa_quad.draw()
-
-
-    # def on_draw(self):
-    #     """new anaglyph drawing function."""
-    #     if self.current_vr_scene:
-    #         # One eye
-    #         with self.shader:
-    #             gl.glColorMask(True, False, False, True)
-    #             cam = self.current_vr_scene.camera
-    #             orig_cam_position = cam.position.xyz
-    #             # import ipdb
-    #             # ipdb.set_trace()
-    #             cam.position.xyz = cam.model_matrix.dot([.02 / 2., 0., 0., 1.])[:3]  # inter_eye_distance / 2.
-    #
-    #             cam.uniforms['playerPos'] = cam.position.xyz
-    #             if self.current_vr_scene:
-    #                 with self.cube_fbo as fbo:
-    #                     self.current_vr_scene.draw360_to_texture(fbo.texture)
-    #             self.active_scene.draw()
-    #
-    #             cam.position.xyz = orig_cam_position
-    #
-    #         # Other eye
-    #         with self.shader:
-    #             gl.glColorMask(False, True, True, True)
-    #             cam.position.xyz = cam.model_matrix.dot([-.02 / 2., 0., 0., 1.])[:3]
-    #             cam.uniforms['playerPos'] = cam.position.xyz
-    #             if self.current_vr_scene:
-    #                 with self.cube_fbo as fbo:
-    #                     self.current_vr_scene.draw360_to_texture(fbo.texture)
-    #             self.active_scene.draw()
-    #
-    #             cam.position.xyz = orig_cam_position
-
     def on_draw(self):
-
-        if self.current_vr_scene:
+        """Render the virtual environment."""
+        if self.fps_mode:
             with self.shader:
-                rc.experimental.draw_vr_anaglyph(self.cube_fbo, self.current_vr_scene, self.active_scene, eye_poses=(.035, -.035))
-                # rc.experimental.draw_vr_polarized(self.cube_fbo, self.current_vr_scene, self.active_scene, eye_poses=(.035, -.035))
+                if self.current_vr_scene:
+                    self.current_vr_scene.draw()
+                else:
+                    self.active_scene.draw()
+        else:
+            with self.shader:
+                if self.current_vr_scene:
+                    with self.cube_fbo as fbo:
+    
+                        self.current_vr_scene.draw360_to_texture(fbo.texture)
+                if self.antialiasing:
+                    with self.fbo_aa:
+                        self.active_scene.draw()
+                else:
+                    self.active_scene.draw()
+    
+            if self.antialiasing:
+                with self.shader_deferred:
+                    self.aa_quad.draw()
+
 
 
     def update(self, dt):
