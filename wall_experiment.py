@@ -74,7 +74,7 @@ vr_wall.textures.append(texture)
 
 # (Future code) vr_all.textures.append(rc.Texture.from_image('myimage.png'))
 
-vr_scene_with_wall = rc.Scene(meshes=[vr_arena, vr_wall], name="Arena with Wall")
+vr_scene_with_wall = rc.Scene(meshes=[vr_arena, vr_wall], name="Arena with Wall", bgColor=[1., 1., 0.])
 vr_scene_without_wall = rc.Scene(meshes=[vr_arena], name="Arena without Wall")
 
 
@@ -150,7 +150,7 @@ if cfg.MOUSE.lower() not in ['demo']:
 
 exp = events.chain_events(seq, log=True, motive_client=motive)
 exp.next()
-#pyglet.clock.schedule(exp.send)
+pyglet.clock.schedule(exp.send)
 
 #app.current_vr_scene = vr_scene_with_wall
 

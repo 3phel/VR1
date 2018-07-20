@@ -1,7 +1,7 @@
-MOUSE = ['TestMouse']
+MOUSE = ['demo', 'test', 'TestMouse']
 EXPERIMENTER = ['Ephel Itzcovich']
 # # General settings
-ARENA_FILENAME = './calibrations/arena.obj'
+ARENA_FILENAME = './calibrations/vr_arena.obj'
 ARENA_MESH_NAME = 'Arena'
 ARENA_MOTIVE_NAME = 'Arena'
 RODENT_MOTIVE_NAME = 'Gerbil'
